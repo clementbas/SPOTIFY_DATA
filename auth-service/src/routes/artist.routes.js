@@ -1,17 +1,16 @@
 import { Router } from 'express';
 import { artistController } from '../controllers/artist.controller.js';
-import { authenticate } from '../middlewares/auth.middleware.js';
+import { verifyJwt } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
 // ----- Specific routes -----
-router.get('/nom_scene/:nom_scene', authenticate, artistController.getArtistByNomScene);
+router.get('/nom_scene/:nom_scene', verifyJwt, artistController.getArtistByNomScene);
 
 // ----- CRUD -----
-router.post('/', authenticate, artistController.createArtist);
-router.get('/', authenticate, artistController.getAllArtists);
-router.get('/:id', authenticate, artistController.getArtistById);
-router.put('/:id', authenticate, artistController.updateArtist);
-router.delete('/:id', authenticate, artistController.deleteArtist);
-
+router.post('/', verifyJwt, artistController.createArtist);
+router.get('/', verifyJwt, artistController.getAllArtists);
+router.get('/:id', verifyJwt, artistController.getArtistById);
+router.put('/:id', verifyJwt, artistController.updateArtist);
+router.delete('/:id', verifyJwt, artistController.deleteArtist);
 export default router;
