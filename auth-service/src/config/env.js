@@ -2,9 +2,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const env = {
-  port: process.env.PORT || 4000,
+  port: process.env.PORT || 4001,
   nodeEnv: process.env.NODE_ENV || 'development',
-
+  authServiceToken: process.env.AUTH_SERVICE_TOKEN,
   db: {
     host: process.env.DB_HOST || 'localhost',
     port: process.env.DB_PORT || 3306,

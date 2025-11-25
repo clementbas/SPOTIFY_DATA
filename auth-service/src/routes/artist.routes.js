@@ -1,13 +1,17 @@
 import { Router } from 'express';
-import { ArtistController } from '../controllers/artist.controller.js';
+import { artistController } from '../controllers/artist.controller.js';
+import { authenticate } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
-router.post('/', ArtistController.createArtist);
-router.put('/:id', ArtistController.updateArtist);
-router.get('/:id', ArtistController.getArtistById);
-router.get('/nom_scene/:nom_scene', ArtistController.getArtistByNomScene);
-router.get('/', ArtistController.getAllArtists);
-router.delete('/:id', ArtistController.deleteArtist);
+// ----- Specific routes -----
+router.get('/nom_scene/:nom_scene', authenticate, artistController.getArtistByNomScene);
+
+// ----- CRUD -----
+router.post('/', authenticate, artistController.createArtist);
+router.get('/', authenticate, artistController.getAllArtists);
+router.get('/:id', authenticate, artistController.getArtistById);
+router.put('/:id', authenticate, artistController.updateArtist);
+router.delete('/:id', authenticate, artistController.deleteArtist);
 
 export default router;

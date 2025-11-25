@@ -1,35 +1,59 @@
 import { Artist } from '../models/artist.model.js';
 
-export const ArtistRepository = {
-    createArtist: async (artistData) => {
-        return Artist.create(artistData);
-    },
+export const artistRepository = {
 
-    updateArtist: async (id, updateData) => {
-        const artist = await Artist.findByPk(id);
-        if (!artist) {
-            throw new Error("Artiste non trouvé");
-        }
-        return await artist.update(updateData);
-    },
+  async findById(id) {
+    try {
+      return await Artist.findByPk(id);
+    } catch (error) {
+      throw new Error(`ArtistRepository.findById: ${error.message}`);
+    }
+  },
 
-    getArtistById: async (id) => {
-        return Artist.findByPk(id);
-    },
+  async findByNomScene(nom_scene) {
+    try {
+      return await Artist.findOne({ where: { nom_scene } });
+    } catch (error) {
+      throw new Error(`ArtistRepository.findByNomScene: ${error.message}`);
+    }
+  },
 
-    getArtistByNomScene: async (nom_scene) => {
-        return Artist.findOne({ where: { nom_scene } });
-    },
+  async findAll() {
+    try {
+      return await Artist.findAll();
+    } catch (error) {
+      throw new Error(`ArtistRepository.findAll: ${error.message}`);
+    }
+  },
 
-    getAllArtists: async () => {
-        return Artist.findAll();
-    },
+  async create(artistData) {
+    try {
+      return await Artist.create(artistData);
+    } catch (error) {
+      throw new Error(`ArtistRepository.create: ${error.message}`);
+    }
+  },
 
-    deleteArtist: async (id) => {
-        const artist = await Artist.findByPk(id);
-        if (!artist) {
-            throw new Error("Artiste non trouvé");
-        }
-        return await artist.destroy();
-    },
+  async update(id, updateData) {
+    try {
+      const [affectedRows] = await Artist.update(updateData, { where: { id } });
+
+      if (affectedRows === 0) return null;
+
+      return await Artist.findByPk(id);
+
+    } catch (error) {
+      throw new Error(`ArtistRepository.update: ${error.message}`);
+    }
+  },
+
+  async delete(id) {
+    try {
+      const deleted = await Artist.destroy({ where: { id } });
+      return deleted > 0; // renvoie true / false
+    } catch (error) {
+      throw new Error(`ArtistRepository.delete: ${error.message}`);
+    }
+  }
+
 };
